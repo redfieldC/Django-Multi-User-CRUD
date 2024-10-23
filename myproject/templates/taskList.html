@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-
-  <h1>List of tasks</h1>
-  <a href="{% url 'logout' %}">Logout</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% if request.user.is_authenticated %} Welcome {{request.user}} {% endif %}
+    <h1>List of tasks</h1>
+    {% if tasks %}
+    <ul>
+      {% for task in tasks %}
+      <li>Title: {{task.title}}</li>
+      Description: {{task.description}}
+      <a href="{% url 'task-update' task.id %}">
+        <button>Update Task</button>
+      </a>
+      <a href="{% url 'task-delete' task.id %}">
+        <button>Delete Task</button>
+      </a>
+      <hr />
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h1>No tasks to do</h1>
+    {% endif %}
+    <a href="{% url 'task-create' %}">Create Task</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </body>
 </html>
