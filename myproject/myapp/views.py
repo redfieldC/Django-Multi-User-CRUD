@@ -35,8 +35,11 @@ def registerPage(request):
     return render(request, 'register.html')
 
 def task_list(request):
-   return render(request,'taskList.html')
+   if request.user.is_authenticated:
+    return render(request,'taskList.html')
+   else:
+      return redirect('login')
 
-def logout(request):
+def logout_view(request):
   logout(request)
   return redirect('login')
