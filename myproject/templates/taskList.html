@@ -4,28 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .task-table{
+      width: 100%;
+      border: 1px solid;
+    }
+
+    th,td{
+      border: 1px solid
+    }
+  </style>
   </head>
   <body>
-    {% if request.user.is_authenticated %} Welcome {{request.user}} {% endif %}
-    <h1>List of tasks</h1>
-    {% if tasks %}
-    <ul>
-      {% for task in tasks %}
-      <li>Title: {{task.title}}</li>
-      Description: {{task.description}}
-      <a href="{% url 'task-update' task.id %}">
-        <button>Update Task</button>
-      </a>
-      <a href="{% url 'task-delete' task.id %}">
-        <button>Delete Task</button>
-      </a>
-      <hr />
-      {% endfor %}
-    </ul>
-    {% else %}
-    <h1>No tasks to do</h1>
+    {% if request.user.is_authenticated %}
+      Welcome {{ request.user }}
     {% endif %}
-    <a href="{% url 'task-create' %}">Create Task</a>
-    <a href="{% url 'logout' %}">Logout</a>
+    <a href="{% url 'task-create' %}">
+      <button class="btn btn-success">
+        Create Task
+      </button>
+    </a>
+    <a href="{% url 'logout' %}">
+      <button class="btn btn-warning">
+        Logout
+      </button>
+    </a>
+
+    <h1>List of Tasks</h1>
+
+    {% if tasks %}
+      <table class="task-table"  cellpadding="10">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+            <tr>
+              <td>{{ task.title }}</td>
+              <td>{{ task.description }}</td>
+              <td>
+                <a href="{% url 'task-update' task.id %}">
+                  <button class="btn btn-warning">Update Task</button>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'task-delete' task.id %}">
+                  <button class="btn btn-danger">Delete Task</button>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <h1>No tasks to do</h1>
+    {% endif %}
+
+    
   </body>
 </html>
